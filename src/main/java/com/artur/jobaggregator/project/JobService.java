@@ -1,6 +1,7 @@
 package com.artur.jobaggregator.project;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
@@ -25,12 +26,34 @@ public class JobService {
                 .uri("https://www.arbeitnow.com/api/job-board-api")
                 .retrieve()
                 .body(JobResponse.class);
-        if (response == null | response.getData() == null) {
+        if (response == null || response.getData() == null) {
             logger.info("Data are empty");
             return;
         }
-        jobRepository.saveAll(response.getData());
 
+        for (JobEntity job: response.getData()) {
+            Optional<JobEntity> existing = jobRepository.findBySlug(job.getSlug());
+
+            if (existing.isPresent()) {
+
+                JobEntity jobEntity = existing.get();
+                if (!jobEntity.equals(job)) {
+
+                    jobEntity.setTitle(job.getTitle());
+                    jobEntity.setDescription(job.getDescription());
+                    jobEntity.setRemote(job.isRemote());
+                    jobEntity.setCompanyName(job.getCompanyName());
+                    jobEntity.setLocation(job.getLocation());
+                    jobEntity.setUrl(job.getUrl());
+                    jobEntity.setTags(job.getTags());
+
+                    jobRepository.save(jobEntity);
+                }
+            }
+            else {
+                jobRepository.save(job);
+            }
+        }
     }
 
     public List<JobEntity> getAllJobs() {
@@ -50,6 +73,5 @@ public class JobService {
     public List<JobEntity> searchJobs(String keyword, String location, Boolean remote, Sort sort) {
         return jobRepository.search(keyword, location, remote, sort);
     }
-
 
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -33,6 +34,24 @@ public class JobEntity {
 
     private boolean remote;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || o.getClass() != this.getClass()) return false;
+        JobEntity jobEntity = (JobEntity) o;
+        return jobEntity.remote == this.remote
+                && Objects.equals(jobEntity.companyName, companyName)
+                && Objects.equals(jobEntity.description, description)
+                && Objects.equals(jobEntity.location, location)
+                && Objects.equals(jobEntity.title, title)
+                && Objects.equals(jobEntity.slug, slug)
+                && Objects.equals(jobEntity.url, url)
+                && Objects.deepEquals(jobEntity.tags, tags);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(slug);
+    }
 }
+

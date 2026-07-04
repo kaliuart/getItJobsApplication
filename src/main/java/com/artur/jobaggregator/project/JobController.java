@@ -1,9 +1,11 @@
 package com.artur.jobaggregator.project;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 public class JobController {
@@ -13,7 +15,7 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @PostMapping("/api/jobs/fetch")
+    @Scheduled(fixedDelay = 6, timeUnit = TimeUnit.HOURS)
     public void fetchJobs() {
         jobService.fetchAndSaveJobs();
     }
@@ -23,7 +25,7 @@ public class JobController {
         return jobService.getJobById(id);
     }
 
-    @GetMapping("api/jobs/get")
+    @GetMapping("api/jobs")
     public List<JobEntity> getAll() {
         return jobService.getAllJobs();
     }

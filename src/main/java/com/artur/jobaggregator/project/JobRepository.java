@@ -1,12 +1,15 @@
 package com.artur.jobaggregator.project;
 
+import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface JobRepository extends JpaRepository <JobEntity, Long> {
     @Query(
             "SELECT j FROM JobEntity j " +
@@ -21,4 +24,6 @@ public interface JobRepository extends JpaRepository <JobEntity, Long> {
             @Param("remote") Boolean remote,
             Sort sort
     );
+
+    Optional<JobEntity> findBySlug(String slug);
 }
