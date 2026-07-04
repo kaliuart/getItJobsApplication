@@ -1,3 +1,11 @@
 spring:
   application:
     name: project_getJobs_Spring
+  datasource:
+    url: jdbc:postgresql://localhost:5433/jobsdb
+    username: postgres
+    password: 18051974
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
