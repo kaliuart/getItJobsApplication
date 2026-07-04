@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class JobEntity {
@@ -11,6 +13,11 @@ public class JobEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
+
+    @Column(unique = true)
+    private String slug;
+
+    private List<String> tags;
 
     private String title;
 
@@ -25,6 +32,7 @@ public class JobEntity {
     private String location;
 
     private boolean remote;
+
 
 
 }

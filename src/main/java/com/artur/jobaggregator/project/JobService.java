@@ -3,6 +3,7 @@ package com.artur.jobaggregator.project;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -44,6 +45,10 @@ public class JobService {
                                 "Job was not found by that id" + id
                         )
                 );
+    }
+
+    public List<JobEntity> searchJobs(String keyword, String location, Boolean remote, Sort sort) {
+        return jobRepository.search(keyword, location, remote, sort);
     }
 
 
