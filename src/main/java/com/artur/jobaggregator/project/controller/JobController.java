@@ -1,5 +1,7 @@
-package com.artur.jobaggregator.project;
+package com.artur.jobaggregator.project.controller;
 
+import com.artur.jobaggregator.project.dto.JobDto;
+import com.artur.jobaggregator.project.service.JobService;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +23,17 @@ public class JobController {
     }
 
     @GetMapping("/api/jobs/{id}")
-    public JobEntity getOne(@PathVariable Long id) {
+    public JobDto getOne(@PathVariable Long id) {
         return jobService.getJobById(id);
     }
 
     @GetMapping("api/jobs")
-    public List<JobEntity> getAll() {
+    public List<JobDto> getAll() {
         return jobService.getAllJobs();
     }
 
     @GetMapping("api/jobs/search")
-    public List<JobEntity> search(@RequestParam(required = false) String keyword,
+    public List<JobDto> search(@RequestParam(required = false) String keyword,
                                   @RequestParam(required = false) String location,
                                   @RequestParam(required = false) Boolean remote,
                                   @RequestParam(defaultValue = "title") String sortBy,

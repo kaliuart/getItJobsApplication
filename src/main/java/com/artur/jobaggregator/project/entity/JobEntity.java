@@ -1,14 +1,18 @@
-package com.artur.jobaggregator.project;
+package com.artur.jobaggregator.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.List;
 import java.util.Objects;
 
 @Data
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JobEntity {
 
     @Id

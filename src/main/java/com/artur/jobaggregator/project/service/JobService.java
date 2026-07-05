@@ -1,5 +1,10 @@
-package com.artur.jobaggregator.project;
+package com.artur.jobaggregator.project.service;
 
+import com.artur.jobaggregator.project.entity.JobEntity;
+import com.artur.jobaggregator.project.JobMapper;
+import com.artur.jobaggregator.project.repository.JobRepository;
+import com.artur.jobaggregator.project.JobResponse;
+import com.artur.jobaggregator.project.dto.JobDto;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -14,11 +19,14 @@ import java.util.List;
 public class JobService {
     private final JobRepository jobRepository;
     private final RestClient client;
+    private final JobMapper jobMapper;
+
     private final Logger logger = LoggerFactory.getLogger(JobService.class);
 
-    public JobService(JobRepository jobRepository, RestClient client) {
+    public JobService(JobRepository jobRepository, RestClient client, JobMapper jobMapper) {
         this.jobRepository = jobRepository;
         this.client = client;
+        this.jobMapper = jobMapper;
     }
 
     public void fetchAndSaveJobs() {
@@ -56,22 +64,29 @@ public class JobService {
         }
     }
 
-    public List<JobEntity> getAllJobs() {
-        return jobRepository.findAll();
+    public List<JobDto> getAllJobs() {
+        return jobRepository.findAll()
+                .stream()
+                .map(jobMapper::mapToJobDto)
+                .toList();
     }
 
-    public JobEntity getJobById(Long id) {
-        return jobRepository
+    public JobDto getJobById(Long id) {
+        return jobMapper.mapToJobDto(jobRepository
                 .findById(id)
                 .orElseThrow(
                         () -> new EntityNotFoundException(
                                 "Job was not found by that id" + id
                         )
-                );
+                )
+        );
     }
 
-    public List<JobEntity> searchJobs(String keyword, String location, Boolean remote, Sort sort) {
-        return jobRepository.search(keyword, location, remote, sort);
+    public List<JobDto> searchJobs(String keyword, String location, Boolean remote, Sort sort) {
+        return jobRepository.search(keyword, location, remote, sort)
+                .stream()
+                .map(jobMapper::mapToJobDto)
+                .toList();
     }
 
 }
