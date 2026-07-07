@@ -3,7 +3,7 @@ package com.artur.jobaggregator.project.dto;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class LoginRequest {
     private String email;
-    private String name;
+    private String password;
 }
