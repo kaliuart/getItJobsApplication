@@ -2,6 +2,7 @@ package com.artur.jobaggregator.project.auth;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,9 +18,13 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long lifetime;
 
-    public String generateToken(String email) {
-        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    private SecretKey key;
+    @PostConstruct
+    public void init() {
+        key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
+    public String generateToken(String email) {
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
@@ -28,7 +33,25 @@ public class JwtService {
                 .compact();
     }
 
-    public void validateToken() {
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
 
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getEmailFromToken(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
     }
 }

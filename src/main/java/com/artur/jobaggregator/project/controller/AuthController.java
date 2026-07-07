@@ -13,7 +13,7 @@ public class AuthController {
     public AuthController(UserService userService) {
         this.userService = userService;
     }
-    @GetMapping("/auth/login")
+    @PostMapping("/auth/login")
     public AuthResponse login(@RequestBody LoginRequest loginRequest) {
         String token = userService.loginUser(loginRequest);
 
