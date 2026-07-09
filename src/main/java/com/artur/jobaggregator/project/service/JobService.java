@@ -2,13 +2,16 @@ package com.artur.jobaggregator.project.service;
 
 import com.artur.jobaggregator.project.entity.JobEntity;
 import com.artur.jobaggregator.project.JobMapper;
+import com.artur.jobaggregator.project.exception.externalservice.ArbeitnowResponseEmpyException;
+import com.artur.jobaggregator.project.exception.notfound.JobNotFoundException;
 import com.artur.jobaggregator.project.repository.JobRepository;
-import com.artur.jobaggregator.project.JobResponse;
+import com.artur.jobaggregator.project.dto.JobResponse;
 import com.artur.jobaggregator.project.dto.JobDto;
-import jakarta.persistence.EntityNotFoundException;
+
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -20,6 +23,9 @@ public class JobService {
     private final JobRepository jobRepository;
     private final RestClient client;
     private final JobMapper jobMapper;
+
+    @Value("${job-filter.it-keywords}")
+    private List<String> keyWords;
 
     private final Logger logger = LoggerFactory.getLogger(JobService.class);
 
@@ -34,12 +40,16 @@ public class JobService {
                 .uri("https://www.arbeitnow.com/api/job-board-api")
                 .retrieve()
                 .body(JobResponse.class);
+
         if (response == null || response.getData() == null) {
-            logger.info("Data are empty");
-            return;
+            throw new ArbeitnowResponseEmpyException("Arbeitnow response contains no data");
         }
 
         for (JobEntity job: response.getData()) {
+            if (!isItJob(job)) {
+                continue;
+            }
+
             Optional<JobEntity> existing = jobRepository.findBySlug(job.getSlug());
 
             if (existing.isPresent()) {
@@ -56,10 +66,12 @@ public class JobService {
                     jobEntity.setTags(job.getTags());
 
                     jobRepository.save(jobEntity);
+                    logger.info("Job information updated successfully");
                 }
             }
             else {
                 jobRepository.save(job);
+                logger.info("Job successfully saved");
             }
         }
     }
@@ -75,8 +87,8 @@ public class JobService {
         return jobMapper.mapToJobDto(jobRepository
                 .findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(
-                                "Job was not found by that id" + id
+                        () -> new JobNotFoundException(
+                                "Job not found with ID " + id
                         )
                 )
         );
@@ -87,6 +99,19 @@ public class JobService {
                 .stream()
                 .map(jobMapper::mapToJobDto)
                 .toList();
+    }
+
+    public boolean isItJob(JobEntity job) {
+        String title = job.getTitle().toLowerCase();
+        List<String> tags = job.getTags().stream().map(tag -> tag.toLowerCase()).toList();
+        String slug = job.getSlug().toLowerCase();
+
+        for (String keyword:keyWords) {
+            if (title.contains(keyword) || tags.contains(keyword) || slug.contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

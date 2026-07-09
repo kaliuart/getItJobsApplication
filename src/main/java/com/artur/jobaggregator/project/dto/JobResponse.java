@@ -1,4 +1,4 @@
-package com.artur.jobaggregator.project;
+package com.artur.jobaggregator.project.dto;
 
 import com.artur.jobaggregator.project.entity.JobEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

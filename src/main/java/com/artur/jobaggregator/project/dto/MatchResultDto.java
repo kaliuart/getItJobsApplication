@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MatchResult {
+public class MatchResultDto {
     private int matchPercentage;
     private List<String> matchedSkills;
     private List<String> missingSkills;

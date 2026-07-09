@@ -15,4 +15,7 @@ jwt:
   expiration: 86400000
 
 gemini:
-  gemini.api-key: ${GEMINI_API_KEY}
+  api-key: ${GEMINI_API_KEY}
+
+job-filter:
+  it-keywords: developer,engineer,programmer,architect,devops,backend,frontend,fullstack,software,java,python,javascript,typescript,kotlin,golang,php,react,angular,spring,django,node,cybersecurity,sysadmin,database,programming,coding

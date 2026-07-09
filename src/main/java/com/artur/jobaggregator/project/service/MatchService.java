@@ -1,9 +1,11 @@
 package com.artur.jobaggregator.project.service;
 
-import com.artur.jobaggregator.project.dto.MatchRequest;
-import com.artur.jobaggregator.project.dto.MatchResult;
+import com.artur.jobaggregator.project.dto.MatchRequestDto;
+import com.artur.jobaggregator.project.dto.MatchResultDto;
 import com.artur.jobaggregator.project.entity.JobEntity;
-import com.artur.jobaggregator.project.gemini.GeminiResponse;
+import com.artur.jobaggregator.project.dto.GeminiResponseDto;
+import com.artur.jobaggregator.project.exception.externalservice.GeminiResponseEmptyException;
+import com.artur.jobaggregator.project.exception.notfound.JobNotFoundException;
 import com.artur.jobaggregator.project.repository.JobRepository;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +29,43 @@ public class MatchService {
         this.jobRepository = jobRepository;
         this.client = client;
     }
-    public MatchResult match(MatchRequest matchRequest, Long jobId) {
-        JobEntity job = jobRepository.findById(jobId).orElseThrow(() -> new RuntimeException("Job not found: " + jobId));
+    public MatchResultDto match(MatchRequestDto matchRequest, Long jobId) {
+        Map<String, Object> requestBody = getRequestBody(matchRequest,jobId);
+
+        GeminiResponseDto geminiResponse = client
+                .post()
+                .uri("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent")
+                .header("X-goog-api-key", apiKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestBody)
+                .retrieve()
+                .body(GeminiResponseDto.class);
+
+        if (geminiResponse == null || geminiResponse.getCandidates() == null) {
+            throw new GeminiResponseEmptyException("Gemini response contains no data");
+        }
+
+        String jsonResult = geminiResponse
+                .getCandidates()
+                .getFirst()
+                .getContent()
+                .getParts()
+                .getFirst()
+                .getText();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(jsonResult, MatchResultDto.class);
+
+    }
+
+    public Map<String, Object> getRequestBody(MatchRequestDto matchRequest, Long jobId) {
+        JobEntity job = jobRepository
+                .findById(jobId)
+                .orElseThrow(
+                        () -> new JobNotFoundException(
+                                "Job not found with ID " + jobId
+                        )
+                );
 
         String cleanDescription = Jsoup.parse(job.getDescription()).text();
 
@@ -52,7 +89,7 @@ public class MatchService {
         """
                 .formatted(matchRequest.getResume(), job.getTitle(), cleanDescription);
 
-        Map<String, Object> requestBody = Map.of(
+        return  Map.of(
                 "contents", List.of(
                         Map.of("parts", List.of(
                                 Map.of("text", prompt)
@@ -74,26 +111,5 @@ public class MatchService {
                 )
         );
 
-        GeminiResponse geminiResponse = client
-                .post()
-                .uri("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent")
-                .header("X-goog-api-key", apiKey)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(requestBody)
-                .retrieve()
-                .body(GeminiResponse.class);
-
-        String jsonResult = geminiResponse
-                .getCandidates()
-                .getFirst()
-                .getContent()
-                .getParts()
-                .getFirst()
-                .getText();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(jsonResult, MatchResult.class);
-
     }
-
 }
