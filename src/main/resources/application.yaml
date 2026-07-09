@@ -13,3 +13,6 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
   expiration: 86400000
+
+gemini:
+  gemini.api-key: ${GEMINI_API_KEY}
