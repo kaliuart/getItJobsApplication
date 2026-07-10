@@ -4,22 +4,28 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JobEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     private String slug;
 
+    @ElementCollection
     private List<String> tags;
 
     private String title;

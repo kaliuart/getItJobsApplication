@@ -21,13 +21,15 @@ import java.util.Map;
 public class MatchService {
     private final JobRepository jobRepository;
     private final RestClient client;
+    private final ObjectMapper objectMapper;
 
     @Value("${gemini.api-key}")
     private String apiKey;
 
-    public MatchService(JobRepository jobRepository, RestClient client) {
+    public MatchService(JobRepository jobRepository, RestClient client, ObjectMapper objectMapper) {
         this.jobRepository = jobRepository;
         this.client = client;
+        this.objectMapper = objectMapper;
     }
     public MatchResultDto match(MatchRequestDto matchRequest, Long jobId) {
         Map<String, Object> requestBody = getRequestBody(matchRequest,jobId);
@@ -53,7 +55,6 @@ public class MatchService {
                 .getFirst()
                 .getText();
 
-        ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(jsonResult, MatchResultDto.class);
 
     }

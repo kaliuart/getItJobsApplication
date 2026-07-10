@@ -27,12 +27,4 @@ public class AuthController {
         userService.registerUser(registerRequest);
     }
 
-    @PostMapping("/auth/logout")
-    public void logout(){
-        userService.logoutUser();
-    }
-
-
-
-
 }
