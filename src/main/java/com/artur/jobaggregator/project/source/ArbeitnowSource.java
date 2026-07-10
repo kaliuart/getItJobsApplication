@@ -1,6 +1,8 @@
-package com.artur.jobaggregator.project.dto.api;
+package com.artur.jobaggregator.project.source;
 
 import com.artur.jobaggregator.project.JobMapper;
+import com.artur.jobaggregator.project.dto.api.ArbeitnowResponse;
+import com.artur.jobaggregator.project.dto.api.ArbeitnowResult;
 import com.artur.jobaggregator.project.entity.JobEntity;
 import com.artur.jobaggregator.project.exception.externalservice.ArbeitnowResponseEmpyException;
 import org.springframework.stereotype.Component;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ArbeitnowSource implements JobSource{
+public class ArbeitnowSource implements JobSource {
 
     private final RestClient client;
     private final JobMapper jobMapper;

@@ -1,4 +1,4 @@
-package com.artur.jobaggregator.project.dto.api;
+package com.artur.jobaggregator.project.source;
 
 import com.artur.jobaggregator.project.entity.JobEntity;
 

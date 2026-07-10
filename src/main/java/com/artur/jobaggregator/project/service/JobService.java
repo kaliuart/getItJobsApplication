@@ -1,13 +1,10 @@
 package com.artur.jobaggregator.project.service;
 
-import com.artur.jobaggregator.project.dto.api.JobSource;
-import com.artur.jobaggregator.project.dto.api.MuseResponse;
+import com.artur.jobaggregator.project.source.JobSource;
 import com.artur.jobaggregator.project.entity.JobEntity;
 import com.artur.jobaggregator.project.JobMapper;
-import com.artur.jobaggregator.project.exception.externalservice.ArbeitnowResponseEmpyException;
 import com.artur.jobaggregator.project.exception.notfound.JobNotFoundException;
 import com.artur.jobaggregator.project.repository.JobRepository;
-import com.artur.jobaggregator.project.dto.api.ArbeitnowResponse;
 import com.artur.jobaggregator.project.dto.JobDto;
 
 import java.util.ArrayList;
@@ -18,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClient;
 
 import java.util.List;
 

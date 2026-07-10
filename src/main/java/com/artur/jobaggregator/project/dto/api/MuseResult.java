@@ -13,7 +13,7 @@ public class MuseResult {
     private String shortName;
 
     //tags
-    private List<String> categories;
+    private List<MuseCategory> categories;
 
     private String name;
 

@@ -1,8 +1,9 @@
-package com.artur.jobaggregator.project.dto.api;
+package com.artur.jobaggregator.project.source;
 
 import com.artur.jobaggregator.project.JobMapper;
+import com.artur.jobaggregator.project.dto.api.MuseResponse;
+import com.artur.jobaggregator.project.dto.api.MuseResult;
 import com.artur.jobaggregator.project.entity.JobEntity;
-import com.artur.jobaggregator.project.exception.externalservice.ArbeitnowResponseEmpyException;
 import com.artur.jobaggregator.project.exception.externalservice.MuseResponseEmptyException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class MuseSource implements JobSource{
+public class MuseSource implements JobSource {
     private final RestClient client;
     private final JobMapper jobMapper;
 
@@ -25,7 +26,7 @@ public class MuseSource implements JobSource{
         List<JobEntity> jobEntities = new ArrayList<>();
 
         MuseResponse response = client.get()
-                .uri("https://www.arbeitnow.com/api/job-board-api")
+                .uri("https://www.themuse.com/api/public/jobs?page=1&category=Computer%20and%20IT&category=Software%20Engineering")
                 .retrieve()
                 .body(MuseResponse.class);
 

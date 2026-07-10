@@ -6,6 +6,7 @@ import com.artur.jobaggregator.project.dto.api.MuseResult;
 import com.artur.jobaggregator.project.entity.JobEntity;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class JobMapper {
     public JobDto mapToJobDto(JobEntity jobEntity) {
@@ -28,9 +29,12 @@ public class JobMapper {
         jobEntity.setTitle(museResult.getName());
         jobEntity.setCompanyName(museResult.getCompany().getName());
         jobEntity.setDescription(museResult.getContents());
-        jobEntity.setTags(museResult.getCategories());
+        jobEntity.setTags(museResult.getCategories().stream()
+                        .map(MuseResult.MuseCategory::getName)
+                        .toList());
         jobEntity.setLocation(museResult.getLocations().getFirst().getName());
         jobEntity.setUrl(museResult.getRefs().getLandingPage());
+        jobEntity.setSlug(museResult.getShortName());
 
         return jobEntity;
     }
