@@ -1,23 +1,25 @@
 package com.artur.jobaggregator.project.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
 public class RegisterRequestDto {
 
-    @NotNull
+    @NotBlank
     @Email
     private String email;
 
-    @NotNull
+    @NotBlank
+    @Pattern(regexp = ("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=)]).{8,20}$"))
     private String password;
 
-    @NotNull
+    @NotBlank
+    @Size(min = 3, max = 20)
     private String name;
 
-    @NotNull
+    @NotBlank
+    @Pattern(regexp = "^(\\+420)?[0-9]{9}$")
     private String phoneNumber;
 
 }
