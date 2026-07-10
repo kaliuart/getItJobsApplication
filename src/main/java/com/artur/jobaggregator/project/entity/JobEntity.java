@@ -1,7 +1,5 @@
 package com.artur.jobaggregator.project.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +12,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class JobEntity {
 
     @Id
@@ -29,7 +26,6 @@ public class JobEntity {
 
     private String title;
 
-    @JsonProperty("company_name")
     private String companyName;
 
     @Column(columnDefinition = "TEXT")

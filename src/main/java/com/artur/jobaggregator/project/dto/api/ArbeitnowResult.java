@@ -1,6 +1,4 @@
 package com.artur.jobaggregator.project.dto.api;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 import java.util.List;
@@ -14,7 +12,6 @@ public class ArbeitnowResult{
 
     private String title;
 
-    @JsonProperty("company_name")
     private String companyName;
 
     private String description;
