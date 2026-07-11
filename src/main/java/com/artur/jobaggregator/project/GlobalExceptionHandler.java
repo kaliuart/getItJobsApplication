@@ -4,6 +4,7 @@ import com.artur.jobaggregator.project.dto.ErrorResponseDto;
 import com.artur.jobaggregator.project.exception.badrequest.BadRequestException;
 import com.artur.jobaggregator.project.exception.conflict.ConflictException;
 import com.artur.jobaggregator.project.exception.externalservice.ExternalServiceException;
+import com.artur.jobaggregator.project.exception.externalservice.GeminiUnavailableException;
 import com.artur.jobaggregator.project.exception.notfound.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -83,6 +84,18 @@ public class GlobalExceptionHandler {
         );
         logger.error("Handle {}", e.getClass().getName());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
 
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponseDto> handleGeminiUnavailable(GeminiUnavailableException e, HttpServletRequest request) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                "service unavailable",
+                e.getMessage(),
+                LocalDateTime.now(),
+                503,
+                request.getRequestURI()
+        );
+        logger.error("Handle {}", e.getClass().getName());
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(error);
+    }
 }
