@@ -4,8 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class JwtServiceTest {
@@ -20,19 +18,26 @@ class JwtServiceTest {
 
         jwtService.init();
     }
-    @Test
-    void generateToken() {
-
-    }
 
     @Test
-    void validateToken() {
+    void validateToken_validToken_returnsTrue() {
         String email = "email";
 
-        assertTrue(jwtService.validateToken(generateToken(email)));
+        String token = jwtService.generateToken(email);
+        assertTrue(jwtService.validateToken(token));
     }
 
     @Test
-    void getEmailFromToken() {
+    void validateToken_invalidToken_returnsFalse() {
+        String token = "garbage_token";
+        assertFalse(jwtService.validateToken(token));
+    }
+
+    @Test
+    void getEmailFromToken_returnsEmail() {
+        String email = "email";
+
+        String token = jwtService.generateToken(email);
+        assertEquals(email, jwtService.getEmailFromToken(token));
     }
 }
