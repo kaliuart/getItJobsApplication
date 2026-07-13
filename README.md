@@ -86,7 +86,7 @@ Score a resume against job `5`:
 curl -X 'POST' \
   'http://localhost:8080/api/match/6' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VlckBleGFtcGxlLmNvbSIsImlhdCI6MTc4Mzk0NTI2MSwiZXhwIjoxNzg0MDMxNjYxfQ.DVxNe1-t4LUtd-_jANUrfEWGevguw21CELK1E5hXQIU' \
+  -H 'Authorization: Bearer <your-token>' \
   -H 'Content-Type: application/json' \
   -d '{"resume": "Java developer, 8 years. Spring Boot, PostgreSQL, Redis, Docker, JWT, REST, JUnit, Mockito."}
 '
