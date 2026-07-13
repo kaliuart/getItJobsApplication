@@ -63,7 +63,7 @@ public class JobMapper {
         jobEntity.setTitle(arbeitnowResult.getTitle());
         jobEntity.setCompanyName(arbeitnowResult.getCompanyName());
         jobEntity.setDescription(arbeitnowResult.getDescription());
-        jobEntity.setTags(arbeitnowResult.getTags());
+        jobEntity.setTags(arbeitnowResult.getTags() == null ? List.of() : arbeitnowResult.getTags());
         jobEntity.setLocation(arbeitnowResult.getLocation());
         jobEntity.setUrl(arbeitnowResult.getUrl());
         jobEntity.setRemote(arbeitnowResult.isRemote());
