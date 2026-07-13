@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.artur.jobaggregator</groupId>
-    <artifactId>JobMatchAggregatorApplication</artifactId>
+    <artifactId>job-match-aggregator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>job-match-aggregator</name>
     <description>Aggregates IT vacancies from public job boards and scores resumes against them with Gemini</description>
