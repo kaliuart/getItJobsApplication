@@ -1,9 +1,9 @@
-package com.artur.jobaggregator.project.controller;
+package com.artur.jobaggregator.controller;
 
-import com.artur.jobaggregator.project.auth.AuthResponse;
-import com.artur.jobaggregator.project.dto.auth.LoginRequestDto;
-import com.artur.jobaggregator.project.dto.auth.RegisterRequestDto;
-import com.artur.jobaggregator.project.service.UserService;
+import com.artur.jobaggregator.auth.AuthResponse;
+import com.artur.jobaggregator.dto.auth.LoginRequestDto;
+import com.artur.jobaggregator.dto.auth.RegisterRequestDto;
+import com.artur.jobaggregator.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

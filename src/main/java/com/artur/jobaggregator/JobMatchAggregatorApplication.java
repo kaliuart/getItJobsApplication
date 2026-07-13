@@ -10,10 +10,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 @EnableCaching
-public class ProjectGetJobsSpringApplication {
+public class JobMatchAggregatorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProjectGetJobsSpringApplication.class, args);
+        SpringApplication.run(JobMatchAggregatorApplication.class, args);
 
     }
 }
