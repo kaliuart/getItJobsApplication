@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.artur.jobaggregator</groupId>
-    <artifactId>job-match-aggregator</artifactId>
+    <artifactId>JobMatchAggregatorApplication</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>project_getJobs_Spring</name>
-    <description>project_getJobs_Spring</description>
+    <name>job-match-aggregator</name>
+    <description>Aggregates IT vacancies from public job boards and scores resumes against them with Gemini</description>
     <url/>
     <licenses>
         <license/>

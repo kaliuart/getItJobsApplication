@@ -1,0 +1,7 @@
+package com.artur.jobaggregator.exception;
+
+public class WebApplicationException extends RuntimeException{
+    public WebApplicationException(String message) {
+        super(message);
+    }
+}
