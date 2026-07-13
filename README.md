@@ -89,20 +89,29 @@ curl -X POST http://localhost:8080/auth/login \
 Score a resume against job `5`:
 
 ```bash
-curl -X POST http://localhost:8080/api/match/5 \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{"resume": "Java developer, 2 years. Spring Boot, PostgreSQL, Redis, Docker, JWT, REST, JUnit, Mockito."}'
+curl -X 'POST' \
+  'http://localhost:8080/api/match/6' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VlckBleGFtcGxlLmNvbSIsImlhdCI6MTc4Mzk0NTI2MSwiZXhwIjoxNzg0MDMxNjYxfQ.DVxNe1-t4LUtd-_jANUrfEWGevguw21CELK1E5hXQIU' \
+  -H 'Content-Type: application/json' \
+  -d '{"resume": "Java developer, 8 years. Spring Boot, PostgreSQL, Redis, Docker, JWT, REST, JUnit, Mockito."}
+'
 ```
 
 ```json
 {
-  "matchPercentage": 78,
-  "matchedSkills": ["Java", "Spring Boot", "PostgreSQL", "Docker"],
-  "missingSkills": ["Kafka", "Kubernetes"],
-  "experienceMatch": "Slightly below the required 3 years",
-  "summary": "Strong backend fundamentals and a good stack overlap. No messaging or orchestration experience.",
-  "recommendation": "Worth an interview for a junior position."
+  "matchPercentage": 82,
+  "experienceMatch": "The candidate has 8 years of Java development experience, which aligns well with the Senior Software Developer title and the requirement for long-term experience in software development.",
+  "matchedSkills": [
+    "Java", "Spring Boot", "PostgreSQL", "Redis",
+    "Docker", "REST", "JUnit", "Mockito", "Unit Testing"
+  ],
+  "missingSkills": [
+    "Angular", "Python", "AWS", "CI/CD",
+    "German Language (B2)", "Cloud Technologies", "LLMs/Reinforcement Learning"
+  ],
+  "recommendation": "Highly recommended for a technical interview focusing on backend architecture. The candidate perfectly matches the core Java/Spring Boot stack. Screening should prioritize verifying German language proficiency (B2 required) and willingness to work with Angular or Python if needed.",
+  "summary": "The candidate is a strong Senior-level Java Developer with a robust technical foundation in Spring Boot, databases, and testing frameworks, all of which are central to the job vacancy. They have significant industry experience (8 years) and understand modern deployment (Docker). The main gaps are the lack of frontend (Angular) experience and the missing confirmation of German language skills required for the local German market."
 }
 ```
 
